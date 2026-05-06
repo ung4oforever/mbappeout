@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Mbappe Out Petition</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E🔴%3C/text%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --red: #cc0000;
+            --bg: #0d0d0d;
+            --card: #111;
+            --text: #fff;
+            --muted: #ffffff45;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0d0d0d;
+            color: #fff;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @keyframes flicker {
+            0%,
+            100% {
+                opacity: 1;
+                text-shadow: 0 0 20px #cc0000, 0 0 40px #cc0000, 0 0 80px #cc0000;
+            }
+            45% {
+                opacity: 0.88;
+                text-shadow: 0 0 10px #cc0000;
+            }
+            50% {
+                opacity: 1;
+                text-shadow: 0 0 30px #cc0000, 0 0 60px #cc0000;
+            }
+        }
+
+        @keyframes stampIn {
+            0% {
+                transform: scale(2.2) rotate(-8deg);
+                opacity: 0;
+            }
+            65% {
+                transform: scale(0.95) rotate(-3.5deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(-4deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse-red {
+            0%,
+            100% {
+                box-shadow: 0 4px 30px #cc000070;
+            }
+            50% {
+                box-shadow: 0 4px 50px #cc0000aa, 0 0 0 8px #cc000020;
+            }
+        }
+
+        @keyframes shake {
+            0%,
+            100% {
+                transform: translateX(0) scale(0.97);
+            }
+            25% {
+                transform: translateX(-5px) scale(0.97);
+            }
+            75% {
+                transform: translateX(5px) scale(0.97);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes splat {
+            0% {
+                opacity: 0.8;
+                transform: scale(0.6);
+            }
+            60% {
+                opacity: 0.5;
+                transform: scale(1.05);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1);
+            }
+        }
+
+        .top-bar {
+            height: 5px;
+            background: #cc0000;
+            box-shadow: 0 0 20px #cc0000;
+        }
+
+        .hero-bg {
+            background: linear-gradient(180deg, #1c0000 0%, #0d0d0d 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-label {
+            text-align: center;
+            padding-top: 28px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-label-inner {
+            font-family: 'Bebas Neue', Impact, sans-serif;
+            font-size: clamp(18px, 4vw, 30px);
+            letter-spacing: 0.25em;
+            color: #ffffff60;
+        }
+
+        .header-label-inner span {
+            color: #cc0000;
+        }
+
+        .image-wrapper {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            display: block;
+            mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+            object-fit: cover;
+            aspect-ratio: 1 / 1;
+        }
+
+        .splat-overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse at 50% 65%, #cc000050 0%, transparent 65%);
+        }
+
+        .splat-anim {
+            animation: splat 0.7s ease forwards;
+        }
+
+        .main-content {
+            max-width: 620px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        .stamp {
+            animation: stampIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .stamp-wrapper {
+            text-align: center;
+            margin-top: -16px;
+            margin-bottom: 32px;
+        }
+
+        .stamp-text {
+            display: inline-block;
+            font-family: 'Bebas Neue', Impact, sans-serif;
+            font-size: clamp(70px, 22vw, 130px);
+            color: #cc0000;
+            letter-spacing: 0.06em;
+            line-height: 0.9;
+            border: 7px solid #cc0000;
+            padding: 2px 22px 6px;
+            transform: rotate(-4deg);
+            box-shadow: inset 0 0 20px #cc000020, 0 0 40px #cc000050;
+            background: #cc00000a;
+            animation: flicker 4s infinite;
+            text-shadow: 3px 3px 0 #000;
+        }
+
+        .quote-box {
+            border-left: 3px solid #cc0000;
+            padding-left: 18px;
+            margin-bottom: 32px;
+        }
+
+        .quote-box p {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(14px, 3.5vw, 17px);
+            line-height: 1.8;
+            color: #ffffffbb;
+            font-style: italic;
+        }
+
+        .fade-up {
+            animation: fadeUp 0.7s ease 0.2s both;
+        }
+        .fade-up-2 {
+            animation: fadeUp 0.7s ease 0.4s both;
+        }
+        .fade-up-3 {
+            animation: fadeUp 0.7s ease 0.6s both;
+        }
+
+        .counter-card {
+            background: #111;
+            border: 1px solid #cc000030;
+            border-radius: 14px;
+            padding: 24px 28px;
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .counter-glow {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 260px;
+            height: 100px;
+            background: #cc000018;
+            filter: blur(50px);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .counter-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .counter-number {
+            font-family: 'Bebas Neue', Impact, sans-serif;
+            font-size: clamp(52px, 14vw, 80px);
+            line-height: 1;
+            letter-spacing: -0.02em;
+            transition: color 0.4s;
+        }
+
+        .counter-number.flash {
+            color: #ff3333;
+        }
+
+        .counter-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: #ffffff45;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .counter-goal {
+            text-align: right;
+        }
+
+        .counter-goal-num {
+            font-family: 'Bebas Neue', Impact, sans-serif;
+            font-size: 30px;
+            color: #cc0000;
+        }
+
+        .counter-goal-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            color: #ffffff25;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .progress-outer {
+            height: 8px;
+            background: #ffffff0f;
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #7a0000, #cc0000, #ff4444);
+            border-radius: 100px;
+            box-shadow: 0 0 10px #cc000080;
+            transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .progress-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            color: #ffffff20;
+            margin-top: 8px;
+            text-align: right;
+        }
+
+        .vote-btn {
+            width: 100%;
+            padding: 22px;
+            background: linear-gradient(135deg, #990000, #cc0000);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: clamp(18px, 5vw, 24px);
+            font-family: 'Bebas Neue', Impact, sans-serif;
+            letter-spacing: 0.18em;
+            cursor: pointer;
+            animation: pulse-red 2.5s infinite;
+            transition: transform 0.15s, opacity 0.3s;
+        }
+
+        .vote-btn:hover:not(:disabled) {
+            transform: scale(1.03);
+        }
+
+        .vote-btn:active:not(:disabled) {
+            animation: shake 0.35s ease;
+        }
+
+        .vote-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .signed-box {
+            width: 100%;
+            padding: 22px;
+            background: #cc000015;
+            border: 2px solid #cc000060;
+            border-radius: 10px;
+            text-align: center;
+            font-family: 'Bebas Neue', Impact, sans-serif;
+            font-size: clamp(18px, 5vw, 24px);
+            letter-spacing: 0.12em;
+            color: #cc0000;
+        }
+
+        .signed-box.flash-text {
+            color: #cc0000;
+        }
+
+        .share-text {
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            margin-top: 18px;
+            font-size: 12px;
+            color: #ffffff20;
+            letter-spacing: 0.06em;
+        }
+
+        .footer-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid #ffffff08;
+        }
+
+        .footer-line {
+            height: 1px;
+            flex: 1;
+            background: #cc000025;
+        }
+
+        .footer-text {
+            font-family: 'Bebas Neue', Impact, sans-serif;
+            font-size: 12px;
+            color: #ffffff18;
+            letter-spacing: 0.3em;
+        }
+
+        .footer-credit {
+            text-align: center;
+            margin-top: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            color: #ffffff15;
+            letter-spacing: 0.08em;
+            padding-bottom: 40px;
+        }
+
+        .footer-credit span {
+            color: #cc000055;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script>
+        (function() {
+            const GOAL = 200000;
+            const STORAGE_KEY_VOTED = 'mbappe_out_voted';
+            const STORAGE_KEY_COUNT = 'mbappe_out_vote_count';
+
+            // Función para obtener el conteo desde el backend
+            async function fetchCountFromServer() {
+                try {
+                    const response = await fetch('/api/votes');
+                    const data = await response.json();
+                    return data.count || 0;
+                } catch (err) {
+                    console.error('Error fetching count:', err);
+                    return 0;
+                }
+            }
+
+            // Función para enviar un voto al backend
+            async function sendVoteToServer() {
+                try {
+                    const response = await fetch('/api/votes', {
+                        method: 'POST'
+                    });
+                    const data = await response.json();
+                    return data.count || 0;
+                } catch (err) {
+                    console.error('Error sending vote:', err);
+                    return null;
+                }
+            }
+
+            function getStoredCount() {
+                const stored = localStorage.getItem(STORAGE_KEY_COUNT);
+                return stored ? parseInt(stored, 10) : 0;
+            }
+
+            function setStoredCount(count) {
+                localStorage.setItem(STORAGE_KEY_COUNT, count.toString());
+            }
+
+            function hasVoted() {
+                return localStorage.getItem(STORAGE_KEY_VOTED) === 'true';
+            }
+
+            function setVoted() {
+                localStorage.setItem(STORAGE_KEY_VOTED, 'true');
+            }
+
+            // Variable global para el conteo actual
+            let currentVoteCount = 0;
+
+            async function initializeCount() {
+                // Siempre obtenemos el conteo REAL del servidor
+                const serverCount = await fetchCountFromServer();
+                currentVoteCount = serverCount;
+                setStoredCount(currentVoteCount);
+                return currentVoteCount;
+            }
+
+            function render() {
+                const alreadyVoted = hasVoted();
+                const percentage = Math.min((currentVoteCount / GOAL) * 100, 100);
+                const minWidth = currentVoteCount > 0 ? '8px' : '0';
+
+                const root = document.getElementById('root');
+                root.innerHTML = `
+                <div class="top-bar"></div>
+                <div class="hero-bg">
+                    <div class="header-label">
+                        <div class="header-label-inner">Mbappe<span>OUT</span></div>
+                    </div>
+                    <div class="image-wrapper">
+                        <img
+                            src="mbappe.jpeg"
+                            alt="Mbappe Out"
+                            onerror="this.style.display='none'"
+                            loading="eager"
+                        />
+                        <div class="splat-overlay ${alreadyVoted ? '' : 'splat-anim'}" id="splatEl"></div>
+                    </div>
+                </div>
+                <div class="main-content">
+                    <div class="stamp stamp-wrapper">
+                        <span class="stamp-text">FUERA</span>
+                    </div>
+                    <div class="quote-box fade-up">
+                        <p>Madridistas, make your voice heard. If you believe change is needed, don't stay silent — sign this petition and stand for what you think is best for the club's future.</p>
+                    </div>
+                    <div class="counter-card fade-up-2">
+                        <div class="counter-glow"></div>
+                        <div class="counter-row">
+                            <div>
+                                <div class="counter-number" id="counterNum">${currentVoteCount.toLocaleString()}</div>
+                                <div class="counter-label">Madridistas signed</div>
+                            </div>
+                            <div class="counter-goal">
+                                <div class="counter-goal-num">200,000</div>
+                                <div class="counter-goal-label">Goal</div>
+                            </div>
+                        </div>
+                        <div class="progress-outer">
+                            <div class="progress-bar" style="width:${percentage}%; min-width:${minWidth};"></div>
+                        </div>
+                        <div class="progress-label">${percentage.toFixed(2)}% of goal</div>
+                    </div>
+                    <div class="fade-up-3">
+                        ${alreadyVoted
+                            ? `<div class="signed-box" id="signedMsg">VOICE HEARD. FUERA MBAPPE!</div>`
+                            : `<button class="vote-btn" id="signBtn">SIGN THE PETITION</button>`
+                        }
+                    </div>
+                    <p class="share-text">No account needed · Share to grow the movement</p>
+                    <div class="footer-divider">
+                        <div class="footer-line"></div>
+                        <span class="footer-text">HALA MADRID</span>
+                        <div class="footer-line"></div>
+                    </div>
+                    <div class="footer-credit">crafted by <span>Deedawz</span></div>
+                </div>
+            `;
+
+                // Attach event listeners after DOM update
+                const signBtn = document.getElementById('signBtn');
+                const splatEl = document.getElementById('splatEl');
+                const counterNum = document.getElementById('counterNum');
+
+                if (signBtn) {
+                    signBtn.addEventListener('click', async function() {
+                        if (hasVoted()) return;
+
+                        // Disable button immediately
+                        signBtn.disabled = true;
+                        signBtn.textContent = 'SIGNING...';
+
+                        // Trigger splat animation
+                        if (splatEl) {
+                            splatEl.classList.add('splat-anim');
+                        }
+
+                        // Send vote to server
+                        const newServerCount = await sendVoteToServer();
+                        
+                        if (newServerCount !== null) {
+                            // Voto registrado correctamente en el servidor
+                            currentVoteCount = newServerCount;
+                            setStoredCount(newServerCount);
+                            setVoted();
+
+                            // Update counter with flash
+                            if (counterNum) {
+                                counterNum.textContent = currentVoteCount.toLocaleString();
+                                counterNum.classList.add('flash');
+                            }
+
+                            // Replace button with signed message
+                            const fadeUp3 = document.querySelector('.fade-up-3');
+                            if (fadeUp3) {
+                                fadeUp3.innerHTML =
+                                    '<div class="signed-box flash-text" id="signedMsg">VOICE HEARD. FUERA MBAPPE!</div>';
+                                // Remove flash class after a moment
+                                setTimeout(() => {
+                                    const msg = document.getElementById('signedMsg');
+                                    if (msg) msg.classList.remove('flash-text');
+                                }, 4000);
+                            }
+
+                            // Update progress bar
+                            const newPercentage = Math.min((currentVoteCount / GOAL) * 100, 100);
+                            const progressBar = document.querySelector('.progress-bar');
+                            const progressLabel = document.querySelector('.progress-label');
+                            if (progressBar) {
+                                progressBar.style.width = newPercentage + '%';
+                                progressBar.style.minWidth = currentVoteCount > 0 ? '8px' : '0';
+                            }
+                            if (progressLabel) {
+                                progressLabel.textContent = newPercentage.toFixed(2) + '% of goal';
+                            }
+                        } else {
+                            // Error al enviar voto
+                            signBtn.disabled = false;
+                            signBtn.textContent = 'ERROR - TRY AGAIN';
+                            setTimeout(() => {
+                                signBtn.textContent = 'SIGN THE PETITION';
+                            }, 2000);
+                  
