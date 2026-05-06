@@ -416,13 +416,14 @@
     <script>
         (function() {
             const GOAL = 200000;
+            const API_URL = '/api/votes';
             const STORAGE_KEY_VOTED = 'mbappe_out_voted';
             const STORAGE_KEY_COUNT = 'mbappe_out_vote_count';
 
-            // Función para obtener el conteo desde el backend
-            async function fetchCountFromServer() {
+            // Obtener conteo del backend
+            async function fetchCount() {
                 try {
-                    const response = await fetch('/api/votes');
+                    const response = await fetch(API_URL);
                     const data = await response.json();
                     return data.count || 0;
                 } catch (err) {
@@ -431,16 +432,17 @@
                 }
             }
 
-            // Función para enviar un voto al backend
-            async function sendVoteToServer() {
+            // Incrementar voto en el backend
+            async function postVote() {
                 try {
-                    const response = await fetch('/api/votes', {
-                        method: 'POST'
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }
                     });
                     const data = await response.json();
                     return data.count || 0;
                 } catch (err) {
-                    console.error('Error sending vote:', err);
+                    console.error('Error posting vote:', err);
                     return null;
                 }
             }
@@ -462,21 +464,10 @@
                 localStorage.setItem(STORAGE_KEY_VOTED, 'true');
             }
 
-            // Variable global para el conteo actual
-            let currentVoteCount = 0;
-
-            async function initializeCount() {
-                // Siempre obtenemos el conteo REAL del servidor
-                const serverCount = await fetchCountFromServer();
-                currentVoteCount = serverCount;
-                setStoredCount(currentVoteCount);
-                return currentVoteCount;
-            }
-
-            function render() {
-                const alreadyVoted = hasVoted();
-                const percentage = Math.min((currentVoteCount / GOAL) * 100, 100);
-                const minWidth = currentVoteCount > 0 ? '8px' : '0';
+            function render(count, alreadyVoted, justVoted) {
+                const percentage = Math.min((count / GOAL) * 100, 100);
+                const minWidth = count > 0 ? '8px' : '0';
+                const flashClass = justVoted ? ' flash' : '';
 
                 const root = document.getElementById('root');
                 root.innerHTML = `
@@ -492,7 +483,7 @@
                             onerror="this.style.display='none'"
                             loading="eager"
                         />
-                        <div class="splat-overlay ${alreadyVoted ? '' : 'splat-anim'}" id="splatEl"></div>
+                        <div class="splat-overlay ${justVoted ? 'splat-anim' : ''}" id="splatEl"></div>
                     </div>
                 </div>
                 <div class="main-content">
@@ -506,7 +497,7 @@
                         <div class="counter-glow"></div>
                         <div class="counter-row">
                             <div>
-                                <div class="counter-number" id="counterNum">${currentVoteCount.toLocaleString()}</div>
+                                <div class="counter-number${flashClass}" id="counterNum">${count.toLocaleString()}</div>
                                 <div class="counter-label">Madridistas signed</div>
                             </div>
                             <div class="counter-goal">
@@ -521,7 +512,7 @@
                     </div>
                     <div class="fade-up-3">
                         ${alreadyVoted
-                            ? `<div class="signed-box" id="signedMsg">VOICE HEARD. FUERA MBAPPE!</div>`
+                            ? `<div class="signed-box${justVoted ? ' flash-text' : ''}" id="signedMsg">${justVoted ? 'VOICE HEARD. FUERA MBAPPE!' : "YOU'VE ALREADY SIGNED"}</div>`
                             : `<button class="vote-btn" id="signBtn">SIGN THE PETITION</button>`
                         }
                     </div>
@@ -535,67 +526,74 @@
                 </div>
             `;
 
-                // Attach event listeners after DOM update
+                // Attach event listener al botón de firmar
                 const signBtn = document.getElementById('signBtn');
-                const splatEl = document.getElementById('splatEl');
-                const counterNum = document.getElementById('counterNum');
-
                 if (signBtn) {
                     signBtn.addEventListener('click', async function() {
                         if (hasVoted()) return;
 
-                        // Disable button immediately
+                        // Deshabilitar botón
                         signBtn.disabled = true;
                         signBtn.textContent = 'SIGNING...';
 
-                        // Trigger splat animation
-                        if (splatEl) {
-                            splatEl.classList.add('splat-anim');
-                        }
+                        // Enviar voto al backend
+                        const newCount = await postVote();
 
-                        // Send vote to server
-                        const newServerCount = await sendVoteToServer();
-                        
-                        if (newServerCount !== null) {
-                            // Voto registrado correctamente en el servidor
-                            currentVoteCount = newServerCount;
-                            setStoredCount(newServerCount);
+                        if (newCount !== null) {
+                            setStoredCount(newCount);
                             setVoted();
-
-                            // Update counter with flash
-                            if (counterNum) {
-                                counterNum.textContent = currentVoteCount.toLocaleString();
-                                counterNum.classList.add('flash');
-                            }
-
-                            // Replace button with signed message
-                            const fadeUp3 = document.querySelector('.fade-up-3');
-                            if (fadeUp3) {
-                                fadeUp3.innerHTML =
-                                    '<div class="signed-box flash-text" id="signedMsg">VOICE HEARD. FUERA MBAPPE!</div>';
-                                // Remove flash class after a moment
-                                setTimeout(() => {
-                                    const msg = document.getElementById('signedMsg');
-                                    if (msg) msg.classList.remove('flash-text');
-                                }, 4000);
-                            }
-
-                            // Update progress bar
-                            const newPercentage = Math.min((currentVoteCount / GOAL) * 100, 100);
-                            const progressBar = document.querySelector('.progress-bar');
-                            const progressLabel = document.querySelector('.progress-label');
-                            if (progressBar) {
-                                progressBar.style.width = newPercentage + '%';
-                                progressBar.style.minWidth = currentVoteCount > 0 ? '8px' : '0';
-                            }
-                            if (progressLabel) {
-                                progressLabel.textContent = newPercentage.toFixed(2) + '% of goal';
-                            }
+                            // Re-renderizar con el nuevo conteo
+                            render(newCount, true, true);
                         } else {
-                            // Error al enviar voto
+                            // Si falla, restaurar botón
                             signBtn.disabled = false;
-                            signBtn.textContent = 'ERROR - TRY AGAIN';
-                            setTimeout(() => {
-                                signBtn.textContent = 'SIGN THE PETITION';
-                            }, 2000);
-                  
+                            signBtn.textContent = 'SIGN THE PETITION';
+                            alert('Error connecting to server. Please try again.');
+                        }
+                    });
+                }
+
+                // Si acaba de votar, quitar el flash después de 4 segundos
+                if (justVoted) {
+                    setTimeout(() => {
+                        const msg = document.getElementById('signedMsg');
+                        if (msg) {
+                            msg.textContent = "YOU'VE ALREADY SIGNED";
+                            msg.classList.remove('flash-text');
+                        }
+                        const num = document.getElementById('counterNum');
+                        if (num) num.classList.remove('flash');
+                    }, 4000);
+                }
+
+                // Limpiar animación del splat
+                const splatEl = document.getElementById('splatEl');
+                if (splatEl && splatEl.classList.contains('splat-anim')) {
+                    splatEl.addEventListener('animationend', function() {
+                        splatEl.classList.remove('splat-anim');
+                    }, { once: true });
+                }
+            }
+
+            // Inicialización
+            async function init() {
+                const alreadyVoted = hasVoted();
+                let count;
+
+                if (alreadyVoted) {
+                    // Si ya votó, usar el conteo guardado localmente
+                    count = getStoredCount();
+                } else {
+                    // Si no ha votado, obtener el conteo real del backend
+                    count = await fetchCount();
+                    setStoredCount(count);
+                }
+
+                render(count, alreadyVoted, false);
+            }
+
+            init();
+        })();
+    </script>
+</body>
+</html>
